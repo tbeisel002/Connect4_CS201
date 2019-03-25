@@ -41,7 +41,7 @@ int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height
       return returnMaxArr;
     }
   }
-  if(depth > 4) {
+  if(depth > 6) { // Only go up to depth of 5 (0-4)
     returnMaxArr[0] = *maxArr;
     returnMaxArr[1] = (depth+1) - (size * size);
     return returnMaxArr;
@@ -113,7 +113,7 @@ int * minAlg(int *board, int size, int depth, int moveCount, int col, int height
       return returnMinArr;
     }
   }
-  if(depth > 4) {
+  if(depth > 6) {
     returnMinArr[0] = *minArr;
     returnMinArr[1] = (size * size) - (depth+1);
     return returnMinArr;

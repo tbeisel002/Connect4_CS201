@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "inputOutput.h"
 #include "board.h"
 
 int printMenu() {
-  int response;
+  char response[100];
   printf("\n\nSelect a menu choice\n");
   printf("1 - Play a player vs player game\n");
   printf("2 - Play a user vs computer game\n");
@@ -13,25 +14,29 @@ int printMenu() {
   printf("4 - View/Reset user vs computer statistics\n");
   printf("5 - Exit game\n");
   printf("-->");
-  scanf("%d", &response);
-  while(response < 1 || response > 5) {
+  do {
+    scanf(" %s", response);
+    if(verifyIntInRange(response, 1, 5) != -2) {
+      break;
+    }
     printf("Please enter a valid menu choice (1-5)\n");
     printf("-->");
-    scanf("%d", &response);
-  }
-  return response;
+  } while(1);
+  return atoi(response);
 }
 
 int getBoardSize() {
-	int size;
+	char size[100];
 	printf("Enter the length/width of the square board: ");
-	scanf("%d", &size);
-  while(size < 4) {
-    printf("Board size can not be smaller than 4\n");
+  do {
+  	scanf(" %s", size);
+    if(verifyIntInRange(size, 4, 1000000) != -2) {
+      break;
+    }
+    printf("Invalid input. Board size can not be smaller than 4\n");
     printf("Enter the length/width of the square board: ");
-  	scanf("%d", &size);
-  }
-	return size;
+  } while(1);
+	return atoi(size);
 }
 
 int * promptPlayerMove(int turnCount, int size, int *board) {
@@ -70,47 +75,52 @@ int * promptPlayerMove(int turnCount, int size, int *board) {
 }
 
 char printPvpWins(int p1Wins, int p2Wins) {
-  char response;
+  char response[100];
   printf("\nPlayer 1 has %d Wins\n", p1Wins);
   printf("Player 2 has %d Wins\n", p2Wins);
   printf("Would you like to reset win counts? (y/n)\n");
   printf("-->");
-  scanf(" %c", &response);
-  if(response != 'y' || response != 'n') {
-      int valid = 0;
-      while(valid == 0) {
-        if(response == 'y' || response == 'n') {
-          valid = 1;
-        }
-        else {
-          printf("Invalid Response. Please enter y or n\n");
-          printf("-->");
-          scanf(" %c", &response);
-        }
-      }
-  }
-  return response;
+  do {
+    scanf(" %s", response);
+    if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
+      break;
+    }
+    printf("Invalid Response. Please enter y or n\n");
+    printf("-->");
+  } while(1);
+  return response[0];
 }
 
 char printPvcWins(int pWins, int cWins) {
-  char response;
+  char response[100];
   printf("\nUser has %d Wins\n", pWins);
   printf("Computer has %d Wins\n", cWins);
   printf("Would you like to reset win counts? (y/n)\n");
   printf("-->");
-  scanf(" %c", &response);
-  if(response != 'y' || response != 'n') {
-      int valid = 0;
-      while(valid == 0) {
-        if(response == 'y' || response == 'n') {
-          valid = 1;
-        }
-        else {
-          printf("Invalid Response. Please enter y or n\n");
-          printf("-->");
-          scanf(" %c", &response);
-        }
-      }
+  do {
+    scanf(" %s", response);
+    if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
+      break;
+    }
+    printf("Invalid Response. Please enter y or n\n");
+    printf("-->");
+  } while(1);
+  return response[0];
+}
+
+int verifyIntInRange(char *input, int low, int high) {
+  int length = (int)strlen(input);
+  if(high < 10 && length != 1) {
+    return -2;
   }
-  return response;
+  for(int i = 0; i < length; i++) {
+    if(!isdigit(input[i])) {
+      return -2;
+    }
+  }
+  int intInput = atoi(input);
+  if(intInput < low || intInput > high) {
+    return -2;
+  }
+  return intInput;
 }

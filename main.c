@@ -82,6 +82,7 @@ int main(void) {
 					*(arr+1), -1000000, 1000000, columnOrder);
 					placeMove((int *)board, 2, *(aiMove), boardSize);
 					numMoves++;
+					printf("\nThe computer played column %d\n", *(aiMove) + 1);
 					printBoard((int *)board, boardSize);
 					int cpuHeight = getPrevHeight((int *)board, boardSize, *aiMove);
 					gameOver = checkGameState((int *)board, boardSize, *(aiMove), cpuHeight);
