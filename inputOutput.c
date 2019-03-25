@@ -41,36 +41,32 @@ int getBoardSize() {
 
 int * promptPlayerMove(int turnCount, int size, int *board) {
   static int arr[2];
-  int col, colHeight;
+  int colHeight, col;
+  char colInput[100];
+  int column;
   printf("\nPlayer %d's turn. Enter column number: ", turnCount);
-  scanf("%d", &col);
-  if(col <= size && col > 0) { // implement check col height function
-    colHeight = colFull((int *)board, col - 1, size);
-  }
-  while((col < -1 || col > size || col == 0) || colHeight == -1) {
-    if(col < -1 || col > size || col == 0) {
-      printf("Column number must be between 1 and %d\n", size);
-    }
-    else {
+  do {
+    scanf(" %s", colInput);
+    col = verifyIntInRange(colInput, 1, size);
+    if(col != -2) {
+      colHeight = colFull((int *)board, col - 1, size);
+      if(colHeight != -1) {
+        arr[0] = col;
+        arr[1] = colHeight;
+        return arr;
+      }
       printf("That column is already full\n");
     }
-    printf("Enter column number: ");
-    scanf("%d", &col);
-    colHeight = colFull((int *)board, col - 1, size);
-    while(colHeight == -1 || (col < -1 || col > size || col == 0)) {
-      if((col < -1 || col > size || col == 0)) {
-        printf("Column number must be between 1 and %d\n", size);
-      }
-      else {
-        printf("That column is already full\n");
-      }
-      printf("Enter column number: ");
-      scanf("%d", &col);
-      colHeight = colFull((int *)board, col - 1, size);
+    else if(checkForExitCode(colInput) == 1) {
+      arr[0] = -1;
+      arr[1] = -1;
+      return arr;
     }
-  }
-  arr[0] = col;
-  arr[1] = colHeight;
+    else {
+      printf("Column number must be between 1 and %d\n", size);
+    }
+    printf("Enter column number: ");
+  } while(1);
   return arr;
 }
 
@@ -123,4 +119,14 @@ int verifyIntInRange(char *input, int low, int high) {
     return -2;
   }
   return intInput;
+}
+
+int checkForExitCode(char *input) {
+  int length = (int)strlen(input);
+  if(length == 2) {
+    if(input[0] == '-' && input[1] == '1') {
+      return 1;
+    }
+  }
+  return 0;
 }

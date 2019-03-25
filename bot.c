@@ -6,45 +6,44 @@
 
 int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height,
   int alpha, int beta, int colOrder[]) {
-  static int returnMaxArr[2]; //static arrays to be retuned
-  int max[2];
-  int maxArr[2];
-  static int returnMax[2];
+  static int baseMaxArr[2]; //static array to be retuned if base case met
+  static int returnMax[2]; // static array to be returned if not base case
+  int max[2]; // non-static array for non base case operations within function
+  int baseMaxArrInternal[2]; // non-static array for base case operations within function
   int gameOver = checkGameState((int *)board, size, col, height);
-  *maxArr = col;
+  *baseMaxArrInternal = col;
   if(gameOver == 1) {
-    *(maxArr+1) = (size * size) - depth;
-    returnMaxArr[0] = *maxArr;
-    returnMaxArr[1] = *(maxArr+1);
-    return returnMaxArr;
+    *(baseMaxArrInternal+1) = (size * size) - depth;
+    baseMaxArr[0] = *baseMaxArrInternal;
+    baseMaxArr[1] = *(baseMaxArrInternal+1);
+    return baseMaxArr;
   }
   else if(gameOver == 2) {
-    *(maxArr+1) = depth - (size * size);
-    returnMaxArr[0] = *maxArr;
-    returnMaxArr[1] = *(maxArr+1);
-    return returnMaxArr;
+    *(baseMaxArrInternal+1) = depth - (size * size);
+    baseMaxArr[0] = *baseMaxArrInternal;
+    baseMaxArr[1] = *(baseMaxArrInternal+1);
+    return baseMaxArr;
   }
   else if(moveCount >= size * size) {
-    *(maxArr+1) = 0;
-    returnMaxArr[0] = *maxArr;
-    returnMaxArr[1] = *(maxArr+1);
-    return returnMaxArr;
+    *(baseMaxArrInternal+1) = 0;
+    baseMaxArr[0] = *baseMaxArrInternal;
+    baseMaxArr[1] = *(baseMaxArrInternal+1);
+    return baseMaxArr;
   }
   *(max) = -1;
   *(max+1) = (depth+1) - (size * size);
   if(alpha > *(max+1)) {
     alpha = *(max+1);
     if(alpha >= beta) { // prune this exploration
-      //printf("holla\n");
-      returnMaxArr[0] = *max;
-      returnMaxArr[1] = beta;
-      return returnMaxArr;
+      baseMaxArr[0] = *max;
+      baseMaxArr[1] = beta;
+      return baseMaxArr;
     }
   }
   if(depth > 6) { // Only go up to depth of 5 (0-4)
-    returnMaxArr[0] = *maxArr;
-    returnMaxArr[1] = (depth+1) - (size * size);
-    return returnMaxArr;
+    baseMaxArr[0] = *baseMaxArrInternal;
+    baseMaxArr[1] = (depth+1) - (size * size);
+    return baseMaxArr;
   }
 
   int i, colHeight;
@@ -59,7 +58,6 @@ int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height
       colHeight, alpha, beta, colOrder);
 
       if(*(maxCurr+1) >= beta) { //prune if better than what were looking for
-        //printf("yowdy\n");
         returnMax[1] = *(maxCurr+1);
         returnMax[0] = colOrder[i];
         return returnMax;
@@ -78,45 +76,44 @@ int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height
 
 int * minAlg(int *board, int size, int depth, int moveCount, int col, int height,
   int alpha, int beta, int colOrder[]) {
-  static int returnMinArr[2]; //static arrays to be retuned
-  int min[2];
-  int minArr[2];
-  static int returnMin[2];
+  static int baseMinArr[2]; //static array to be retuned if base case met
+  static int returnMin[2]; //static array to be returned if not base case
+  int min[2]; //non-static array for non base case operations within function
+  int baseMinArrInternal[2]; //non-static array for base case operations within function
   int gameOver = checkGameState((int *)board, size, col, height);
-  *minArr = col;
+  *baseMinArrInternal = col;
   if(gameOver == 1) {
-    *(minArr+1) = (size * size) - depth;
-    returnMinArr[0] = *minArr;
-    returnMinArr[1] = *(minArr+1);
-    return returnMinArr;
+    *(baseMinArrInternal+1) = (size * size) - depth;
+    baseMinArr[0] = *baseMinArrInternal;
+    baseMinArr[1] = *(baseMinArrInternal+1);
+    return baseMinArr;
   }
   else if(gameOver == 2) {
-    *(minArr+1)  = depth - (size * size);
-    returnMinArr[0] = *minArr;
-    returnMinArr[1] = *(minArr+1);
-    return returnMinArr;
+    *(baseMinArrInternal+1)  = depth - (size * size);
+    baseMinArr[0] = *baseMinArrInternal;
+    baseMinArr[1] = *(baseMinArrInternal+1);
+    return baseMinArr;
   }
   else if(moveCount >= size * size) {
-    *(minArr+1)  = 0;
-    returnMinArr[0] = *minArr;
-    returnMinArr[1] = *(minArr+1);
-    return returnMinArr;
+    *(baseMinArrInternal+1)  = 0;
+    baseMinArr[0] = *baseMinArrInternal;
+    baseMinArr[1] = *(baseMinArrInternal+1);
+    return baseMinArr;
   }
   *min = -2;
   *(min+1) = (size * size) - (depth+1); //upper bound for score
   if(beta > *(min+1)) {
     beta = *(min+1);
     if(beta <= alpha) {
-      //printf("holla\n");
-      returnMinArr[0] = *min;
-      returnMinArr[1] = beta;
-      return returnMinArr;
+      baseMinArr[0] = *min;
+      baseMinArr[1] = beta;
+      return baseMinArr;
     }
   }
   if(depth > 6) {
-    returnMinArr[0] = *minArr;
-    returnMinArr[1] = (size * size) - (depth+1);
-    return returnMinArr;
+    baseMinArr[0] = *baseMinArrInternal;
+    baseMinArr[1] = (size * size) - (depth+1);
+    return baseMinArr;
   }
 
   int i, colHeight;
@@ -129,9 +126,6 @@ int * minAlg(int *board, int size, int depth, int moveCount, int col, int height
 
         int *minCurr = maxAlg((int *)board2, size, depth+1, moveCount+1, colOrder[i],
         colHeight, alpha, beta, colOrder);
-        //if(moveCount == moveCount + depth) {
-          //printf("%d    %d    %d    %d\n", colOrder[i], *(minCurr + 1), alpha, beta);
-        //}
         if(*(minCurr+1) <= alpha) {
           returnMin[1] = *(minCurr+1);
           returnMin[0] = colOrder[i];
