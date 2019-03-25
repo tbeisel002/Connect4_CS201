@@ -1,9 +1,10 @@
 # Connect4_CS201
-Still to do
+Still to do<br>
 
 
--Fix input error handling
--comment code
--clean up bot.c
--hopefully test in ubuntu
--
+-comment code<br>
+-add warning for board too large<br>
+-clean up bot.c<br>
+-hopefully test in ubuntu<br>
+-add info about exiting game or remove exit game feature<br>
+
