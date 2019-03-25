@@ -1,8 +1,10 @@
 #ifndef INPUTOUTPUT_H_INCLUDED
 #define INPUTOUTPUT_H_INCLUDED
 
-int getGameType();
+int printMenu();
 int getBoardSize();
-int promptPlayerMove(int turnCount);
+int * promptPlayerMove(int turnCount, int size, int *board);
+char printPvpWins(int p1Wins, int p2Wins);
+char printPvcWins(int pWins, int cWins);
 
 #endif
