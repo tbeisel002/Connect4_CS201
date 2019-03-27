@@ -133,5 +133,6 @@ int main(void) {
 				cpuWins = 0;
 			}
 		}
+		menuChoice = printMenu();
 	}
 }
