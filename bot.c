@@ -1,6 +1,6 @@
 #include "bot.h"
-#include "position.h"
 #include "board.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -50,7 +50,8 @@ int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height
   for(i = 0; i < size; i++) {
     colHeight = colFull((int *)board, colOrder[i], size);
     if(colHeight != -1) {
-      int board2 [size][size];
+      //int board2 [size][size];
+      int *board2 = (int*)malloc(sizeof(int)*size*size);
       memcpy(board2, (int *)board, sizeof (int) * size * size);
       placeMove((int *)board2, 1, colOrder[i], size);
 
@@ -60,12 +61,14 @@ int * maxAlg(int *board, int size, int depth, int moveCount, int col, int height
       if(*(maxCurr+1) >= beta) { //prune if better than what were looking for
         returnMax[1] = *(maxCurr+1);
         returnMax[0] = colOrder[i];
+        free(board2);
         return returnMax;
       }
       else if(*(maxCurr+1) > alpha) {
         alpha = *(maxCurr+1);
         *max = colOrder[i];
       }
+      free(board2);
     }
   }
 
@@ -120,7 +123,8 @@ int * minAlg(int *board, int size, int depth, int moveCount, int col, int height
   for(i = 0; i < size; i++) {
     colHeight = colFull((int *)board, colOrder[i], size);
       if(colHeight != -1) {
-        int board2 [size][size];
+        //int board2 [size][size];
+        int *board2 = (int*)malloc(sizeof(int)*size*size);
         memcpy(board2, (int *)board, sizeof (int) * size * size);
         placeMove((int *)board2, 2, colOrder[i], size);
 
@@ -129,12 +133,14 @@ int * minAlg(int *board, int size, int depth, int moveCount, int col, int height
         if(*(minCurr+1) <= alpha) {
           returnMin[1] = *(minCurr+1);
           returnMin[0] = colOrder[i];
+          free(board2);
           return returnMin;
         }
         else if(*(minCurr+1) < beta) {
           beta = *(minCurr+1);
           *min = colOrder[i];
         }
+        free(board2);
       }
   }
   returnMin[0] = *min;

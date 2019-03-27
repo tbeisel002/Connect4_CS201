@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "board.h"
 #include "inputOutput.h"
-#include "position.h"
 #include "bot.h"
 
 int main(void) {
@@ -19,10 +18,8 @@ int main(void) {
 		if(menuChoice <= 2) {
 			int boardSize = getBoardSize();
 			//int board [boardSize][boardSize];
-			int** board = malloc(boardSize * sizeof(int*));
-    	for (i = 0; i < boardSize; ++i) {
-        board[i] = (int*)malloc(sizeof(int)*boardSize);
-			}
+			int * board;
+    	board = (int*)malloc(sizeof(int)*boardSize*boardSize);
 			printf("\nEnter -1 at any point to return to main menu. Your game will not be saved\n");
 			createBoard((int *)board, boardSize);
 			printBoard((int *)board, boardSize);
@@ -119,11 +116,7 @@ int main(void) {
 					}
 				}
 			}
-			for (int r = 0; r < boardSize; r++) {
-	    	free(board[r]);    // this frees the columns
-			}
-			printf("test\n");
-			//free(board);    // this frees the rows
+			free(board);    // this frees the rows
 			menuChoice = printMenu();
 		}
 		else if(menuChoice == 3) { // view player vs player serie
