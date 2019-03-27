@@ -5,5 +5,4 @@ Still to do<br>
 -comment code<br>
 -clean up bot.c<br>
 -hopefully test in ubuntu<br>
--maybe limit board size for searching <br>
 
