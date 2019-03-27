@@ -7,6 +7,5 @@ Still to do<br>
 -clean up bot.c<br>
 -hopefully test in ubuntu<br>
 -add info about exiting game or remove exit game feature<br>
--fix 1 win typo<br>
--maybe limit board size for searching 
+-maybe limit board size for searching <br>
 
