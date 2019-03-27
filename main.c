@@ -13,19 +13,27 @@ int main(void) {
 	int player2Wins = 0;
 	int cpuWins = 0;
 	int userWins = 0;
+	int i;
 	int menuChoice = printMenu();
 	while(menuChoice != 5) {
 		if(menuChoice <= 2) {
 			int boardSize = getBoardSize();
-			int board [boardSize][boardSize];
+			//int board [boardSize][boardSize];
+			int** board = malloc(boardSize * sizeof(int*));
+    	for (i = 0; i < boardSize; ++i) {
+        board[i] = (int*)malloc(sizeof(int)*boardSize);
+			}
+			printf("\nEnter -1 at any point to return to main menu. Your game will not be saved\n");
 			createBoard((int *)board, boardSize);
 			printBoard((int *)board, boardSize);
 			int turnCount = 1;
 			int gameOver = 0;
+			int numMoves = 0;
 
-			if(menuChoice == 1) {
+			if(menuChoice == 1) { // player vs player
 				while(gameOver == 0) {
 					int *arr = promptPlayerMove(turnCount, boardSize, (int *)board);
+					numMoves++;
 					if(*(arr) == -1) {
 						gameOver = 1;
 						break;
@@ -33,6 +41,11 @@ int main(void) {
 					placeMove((int *)board, turnCount, *(arr) - 1, boardSize);
 					printBoard((int *)board, boardSize);
 					gameOver = checkGameState((int *)board, boardSize, (*(arr)) - 1, *(arr+1));
+					if(numMoves >= boardSize * boardSize) {
+						printf("The game is over... you tied.\n\n");
+						userWins++;
+						break;
+					}
 					if(gameOver != 0) {
 						printf("Congrats Player %d, You Won!!!\n\n", turnCount);
 						if(turnCount == 1) {
@@ -50,13 +63,14 @@ int main(void) {
 					}
 				}
 			}
-			else {
+			else { // player vs computer
 				int columnOrder[boardSize];
-				int i;
+				//int columnOrder[20];
+				//if(boardSize <= 20) {
 				for(i = 0; i < boardSize; i++) {
 					columnOrder[i] = boardSize/2 + (1-2*(i%2)) *(i+1)/2;
 				}
-				int numMoves = 0;
+				//}
 				while(gameOver == 0) {
 					int *arr = promptPlayerMove(turnCount, boardSize, (int *)board);
 					if(*(arr) == -1) {
@@ -77,7 +91,14 @@ int main(void) {
 						userWins++;
 						break;
 					}
-
+					//if(boardSize > 20) { // only search cols +- 10 of where user played
+						//for(i = 0; i < 20; i++) { // fixes run speed for boards n > 20
+							//columnOrder[i] = ((*(arr) - 1) + 10)/2 + (1-2*(i%2)) *(i+1)/2;
+						//}
+						//for(i = 0; i < 20; i++) { // fixes run speed for boards n > 20
+							//printf("%d\n", columnOrder[i]);
+						//}
+					//}
 					int *aiMove = minAlg((int *)board, boardSize, 0, numMoves, *(arr) - 1,
 					*(arr+1), -1000000, 1000000, columnOrder);
 					placeMove((int *)board, 2, *(aiMove), boardSize);
@@ -98,21 +119,26 @@ int main(void) {
 					}
 				}
 			}
+			for (int r = 0; r < boardSize; r++) {
+	    	free(board[r]);    // this frees the columns
+			}
+			printf("test\n");
+			//free(board);    // this frees the rows
+			menuChoice = printMenu();
 		}
-		else if(menuChoice == 3) {
+		else if(menuChoice == 3) { // view player vs player serie
 			response = printPvpWins(player1Wins, player2Wins);
 			if(response == 'y') {
 				player1Wins = 0;
 				player2Wins = 0;
 			}
 		}
-		else {
+		else { // view player vs computer series
 			response = printPvcWins(userWins, cpuWins);
 			if(response == 'y') {
 				userWins = 0;
 				cpuWins = 0;
 			}
 		}
-		menuChoice = printMenu();
 	}
 }
