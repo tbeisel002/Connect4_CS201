@@ -22,9 +22,8 @@ int main(void) {
 	int i;
 	int menuChoice = printMenu();
 	while(menuChoice != 5) {
-		if(menuChoice <= 2) {
+		if(menuChoice <= 2) { // if the user has selected to play a game
 			int boardSize = getBoardSize();
-			//int board [boardSize][boardSize];
 			int * board;
     	board = (int*)malloc(sizeof(int)*boardSize*boardSize);
 			printf("\nEnter -1 at any point to return to main menu. Your game will not be saved\n");
@@ -68,8 +67,8 @@ int main(void) {
 				}
 			}
 			else { // player vs computer
-				int columnOrder[boardSize];
-				for(i = 0; i < boardSize; i++) {
+				int columnOrder[boardSize]; // create the middle-out order of columns.
+				for(i = 0; i < boardSize; i++) { // see bot.c for description of why this is useful
 					columnOrder[i] = boardSize/2 + (1-2*(i%2)) *(i+1)/2;
 				}
 				while(gameOver == 0) {

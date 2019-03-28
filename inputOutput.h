@@ -1,5 +1,5 @@
 /*
-* In this header file are bried descriptions for each public function. For more
+* In this header file are brief descriptions for each public function. For more
 * detailed descriptions, see inputOutput.c
 */
 
