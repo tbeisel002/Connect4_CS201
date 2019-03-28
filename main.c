@@ -21,7 +21,7 @@ int main(void) {
 	int userWins = 0;
 	int i;
 	int menuChoice = printMenu();
-	while(menuChoice != 5) {
+	while(menuChoice != 5) { // while the user has not selected menu choice 5 (exit)
 		if(menuChoice <= 2) { // if the user has selected to play a game
 			int boardSize = getBoardSize();
 			int * board;
@@ -37,7 +37,7 @@ int main(void) {
 				while(gameOver == 0) {
 					int *arr = promptPlayerMove(turnCount, boardSize, (int *)board);
 					numMoves++;
-					if(*(arr) == -1) {
+					if(*(arr) == -1) { // if player entered exit code
 						gameOver = 1;
 						break;
 					}
@@ -74,7 +74,7 @@ int main(void) {
 				while(gameOver == 0) {
 					int *arr = promptPlayerMove(turnCount, boardSize, (int *)board);
 					int userColPlayed = *(arr) - 1 ;
-					if(*(arr) == -1) {
+					if(*(arr) == -1) { // if player entered exit code
 						gameOver = 1;
 						break;
 					}
@@ -92,7 +92,7 @@ int main(void) {
 						userWins++;
 						break;
 					}
-
+					// ***** AI SECTION ******
 					int *aiMove = minAlg((int *)board, boardSize, 0, numMoves, *(arr) - 1,
 					*(arr+1), -1000000, 1000000, columnOrder);
 					placeMove((int *)board, 2, *(aiMove), boardSize);
