@@ -2,7 +2,6 @@
 Still to do<br>
 
 
--comment code<br>
 -Update readme<br>
 -Record video<br>
 
