@@ -109,7 +109,6 @@ int * promptPlayerMove(int turnCount, int size, int *board) {
   static int arr[2];
   int colHeight, col;
   char colInput[100];
-  int column;
   printf("\nPlayer %d's turn. Enter column number: ", turnCount);
   do {
     scanf(" %100s", colInput);
