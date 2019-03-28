@@ -3,6 +3,6 @@ Still to do<br>
 
 
 -comment code<br>
--clean up bot.c<br>
--hopefully test in ubuntu<br>
+-Update readme<br>
+-Record video<br>
 
