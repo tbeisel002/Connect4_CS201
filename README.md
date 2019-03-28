@@ -8,7 +8,7 @@ Once you download the repo, use make to build the project and the executable is 
 
 ## Video Link
 
-Update this with the video link once I record the video.
+https://www.youtube.com/watch?v=OxsG-ObiQbE&feature=youtu.be
 
 ## Description of Code
 Every function is commented thoroughly, so for descriptions of the dfs algorithm used, the end game calculator, or any other function, look at the source code. 
@@ -17,3 +17,4 @@ Every function is commented thoroughly, so for descriptions of the dfs algorithm
 
 - User input is capped at 100 characters. If a user enters more than 100 characters, the program will inform the user and gracefully exit to avoid a segmentation fault. <br>
 - When in a game, entering -1 for your turn will return you to the main menu without saving your game. The program will prompt you to confirm that this is what you would like to do. <br>
+- For extremely large board sizes in a player vs cpu game, after the board is printed once the player has picked a move, it will take some time for the cpu to go through the algorithim and determine the next best move. This statement is here to avoid any confusion about whether or not the program is doing anything. <br>
