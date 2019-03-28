@@ -1,3 +1,10 @@
+/************************************************
+* Main.c file
+* This file contains the main method for the program. The body of the main method
+* consists of a while loop that goes in and out of the 4 menu choices, calling
+* the needed external functions for each one. The while loop exits once menu
+* choice 5 is selected and the program is terminated.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

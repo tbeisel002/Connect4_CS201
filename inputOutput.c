@@ -1,3 +1,14 @@
+/************************************************
+* inputOutput.c file
+* This file contains the necessary functions for obtaining input from the user.
+* Every function reads in the input as a string, confirms that the input is valid,
+* and then returns that input to the main method inside of main.c. If the input
+* is not valid, the program will continue to prompt the user until valid input is
+* given. Every string is given a size of char [100]. If the user's input is larger
+* than 100, the program will inform the user that their input was invalid and
+* that they entered too many characters. The program will then safely close using
+* exit(1) as opposed to incurring a seg fault.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -5,6 +16,12 @@
 #include "inputOutput.h"
 #include "board.h"
 
+// Private functions
+static int verifyIntInRange(char *input, int low, int high);
+static int checkForExitCode(char *input);
+static void checkForMaxStringLen(char *input, int size);
+
+//Public functions
 int printMenu() {
   char response[100];
   printf("\n\nSelect a menu choice\n");
@@ -16,10 +33,7 @@ int printMenu() {
   printf("-->");
   do {
     scanf(" %100s", response);
-    if(strlen(response) == 100) {
-      printf("Too many characters entered. Program Closing.\n");
-      exit(1);
-    }
+    checkForMaxStringLen(response, 100);
     if(verifyIntInRange(response, 1, 5) != -2) {
       break;
     }
@@ -34,10 +48,7 @@ int getBoardSize() {
 	printf("Enter the length/width of the square board: ");
   do {
   	scanf(" %100s", size);
-    if(strlen(size) == 100) {
-      printf("Too many characters entered. Program Closing.\n");
-      exit(1);
-    }
+    checkForMaxStringLen(size, 100);
     if(verifyIntInRange(size, 4, 1000000) != -2) {
       break;
     }
@@ -51,10 +62,7 @@ int getBoardSize() {
     printf("-->");
     do {
       scanf(" %100s", response);
-      if(strlen(response) == 100) {
-        printf("Too many characters entered. Program Closing.\n");
-        exit(1);
-      }
+      checkForMaxStringLen(response, 100);
       if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
         break;
       }
@@ -76,10 +84,7 @@ int * promptPlayerMove(int turnCount, int size, int *board) {
   printf("\nPlayer %d's turn. Enter column number: ", turnCount);
   do {
     scanf(" %100s", colInput);
-    if(strlen(colInput) == 100) {
-      printf("Too many characters entered. Program Closing.\n");
-      exit(1);
-    }
+    checkForMaxStringLen(colInput, 100);
     col = verifyIntInRange(colInput, 1, size);
     if(col != -2) {
       colHeight = colFull((int *)board, col - 1, size);
@@ -97,10 +102,7 @@ int * promptPlayerMove(int turnCount, int size, int *board) {
       printf("-->");
       do {
         scanf(" %100s", response);
-        if(strlen(response) == 100) {
-          printf("Too many characters entered. Program Closing.\n");
-          exit(1);
-        }
+        checkForMaxStringLen(response, 100);
         if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
           break;
         }
@@ -142,10 +144,7 @@ char printPvpWins(int p1Wins, int p2Wins) {
   printf("-->");
   do {
     scanf(" %100s", response);
-    if(strlen(response) == 100) {
-      printf("Too many characters entered. Program Closing.\n");
-      exit(1);
-    }
+    checkForMaxStringLen(response, 100);
     if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
       break;
     }
@@ -173,10 +172,7 @@ char printPvcWins(int pWins, int cWins) {
   printf("-->");
   do {
     scanf(" %100s", response);
-    if(strlen(response) == 100) {
-      printf("Too many characters entered. Program Closing.\n");
-      exit(1);
-    }
+    checkForMaxStringLen(response, 100);
     if((int)strlen(response) == 1 && (response[0] == 'y' || response[0] == 'n')) {
       break;
     }
@@ -186,7 +182,7 @@ char printPvcWins(int pWins, int cWins) {
   return response[0];
 }
 
-int verifyIntInRange(char *input, int low, int high) {
+static int verifyIntInRange(char *input, int low, int high) {
   int length = (int)strlen(input);
   if(high < 10 && length != 1) {
     return -2;
@@ -203,7 +199,7 @@ int verifyIntInRange(char *input, int low, int high) {
   return intInput;
 }
 
-int checkForExitCode(char *input) {
+static int checkForExitCode(char *input) {
   int length = (int)strlen(input);
   if(length == 2) {
     if(input[0] == '-' && input[1] == '1') {
@@ -211,4 +207,11 @@ int checkForExitCode(char *input) {
     }
   }
   return 0;
+}
+
+static void checkForMaxStringLen(char *input, int size) {
+  if(strlen(input) == size) {
+    printf("Invalid input, too many characters entered. Program Closing.\n");
+    exit(1);
+  }
 }
