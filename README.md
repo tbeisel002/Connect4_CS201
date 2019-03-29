@@ -18,3 +18,4 @@ Every function is commented thoroughly, so for descriptions of the dfs algorithm
 - User input is capped at 100 characters. If a user enters more than 100 characters, the program will inform the user and gracefully exit to avoid a segmentation fault. <br>
 - When in a game, entering -1 for your turn will return you to the main menu without saving your game. The program will prompt you to confirm that this is what you would like to do. <br>
 - For extremely large board sizes in a player vs cpu game, after the board is printed once the player has picked a move, it will take some time for the cpu to go through the algorithim and determine the next best move. This statement is here to avoid any confusion about whether or not the program is doing anything. <br>
+- Whenever I worked on the project, I did not realize that we were allowed to use stdbool.h. So when you look at my code, you will see 1s and 0s used to represent True and False. <br>
